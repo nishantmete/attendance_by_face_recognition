@@ -5,8 +5,8 @@ import face_recognition
 from PIL import Image, ImageDraw
 
 
-test_file = face_recognition.load_image_file("Man's face.jpg", mode="RGB")
-test_face = cv2.imread("Man's face.jpg")
+test_file = face_recognition.load_image_file("myface.jpg", mode="RGB")
+test_face = cv2.imread("myface.jpg")
 
 locations = face_recognition.face_locations(test_file)
 print(locations)
@@ -17,14 +17,14 @@ top, right, bottom, left = locations[0]
 top, right, bottom, left = int(top), int(right), int(bottom), int(left)
 
 
-with Image.open("Man's face.jpg") as img:
+with Image.open("myface.jpg") as img:
     draw = ImageDraw.Draw(img)
 
     rectangle_coords = (left, top, right, bottom)
 
-    draw.rectangle(rectangle_coords, outline="black", width=2)
+    draw.rectangle(rectangle_coords, outline="green", width=2)
 
-    img.save("new_face.jpg")
+    img.save("my_new_face.jpg")
 
 
 
