@@ -22,6 +22,7 @@ cv2.imshow("Test", test_face)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 
+
 """
 # Create a VideoCapture object
 cap = cv2.VideoCapture(0)  # 0 for the default camera
