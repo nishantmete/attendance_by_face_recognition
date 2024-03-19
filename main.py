@@ -1,13 +1,29 @@
 #importing all the necessary libraries
 
-"""
 import cv2
-import dlib
 import face_recognition
-import pandas 
-"""
 
-"""# Create a VideoCapture object
+
+
+test_file = face_recognition.load_image_file("Man's face.jpg", mode="RGB")
+test_face = cv2.imread("Man's face.jpg")
+
+locations = face_recognition.face_locations(test_file)
+print(locations)
+
+
+top, right, bottom, left = locations[0]
+top, right, bottom, left = int(top), int(right), int(bottom), int(left)
+
+for (top, right, bottom, left) in locations:
+    cv2.rectangle(test_face, (left, top), (right, bottom), (0, 255, 0), 2)
+
+cv2.imshow("Test", test_face)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+"""
+# Create a VideoCapture object
 cap = cv2.VideoCapture(0)  # 0 for the default camera
 
 # Check if the camera is opened correctly
@@ -34,10 +50,8 @@ while True:
 print(cap.isOpened(), cap.getExceptionMode())
 # Release the capture and close all windows
 cap.release()
-cv2.destroyAllWindows()"""
-
-
-print("Hello World!")
+cv2.destroyAllWindows()
+"""
 
 
 
