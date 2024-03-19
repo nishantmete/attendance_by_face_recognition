@@ -2,7 +2,7 @@
 
 import cv2
 import face_recognition
-
+from PIL import Image, ImageDraw
 
 
 test_file = face_recognition.load_image_file("Man's face.jpg", mode="RGB")
@@ -12,8 +12,23 @@ locations = face_recognition.face_locations(test_file)
 print(locations)
 
 
+
 top, right, bottom, left = locations[0]
 top, right, bottom, left = int(top), int(right), int(bottom), int(left)
+
+
+with Image.open("Man's face.jpg") as img:
+    draw = ImageDraw.Draw(img)
+
+    rectangle_coords = (left, top, right, bottom)
+
+    draw.rectangle(rectangle_coords, outline="black", width=2)
+
+    img.save("new_face.jpg")
+
+
+
+
 
 for (top, right, bottom, left) in locations:
     cv2.rectangle(test_face, (left, top), (right, bottom), (0, 255, 0), 2)
