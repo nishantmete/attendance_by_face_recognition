@@ -30,13 +30,13 @@ with Image.open("myface.jpg") as img:
 
 
 
-for (top, right, bottom, left) in locations:
+"""for (top, right, bottom, left) in locations:
     cv2.rectangle(test_face, (left, top), (right, bottom), (0, 255, 0), 2)
 
 cv2.imshow("Test", test_face)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
-
+"""
 
 """
 # Create a VideoCapture object
