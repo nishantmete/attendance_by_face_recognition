@@ -1,74 +1,43 @@
+# this script is for recogninizing the faces in an image and then make a boundry around the faces, this works with the help of face_recognition python library 
+
 #importing all the necessary libraries
-
 import cv2
-import face_recognition
-from PIL import Image, ImageDraw
+from mtcnn.mtcnn import MTCNN
+from insightface.app import FaceAnalysis
+import numpy as np
+from numpy import asarray
+from PIL import Image
+
+# Initializing FaceNet model
+model = FaceAnalysis(allowed_modules=['insightface'])
+model.prepare(ctx_id=0, det_size=(640, 640))
+
+# Load an image
+image = cv2.imread('path/to/image.jpg')
+
+# Detect faces and get encodings
+faces = model.get(image)
+encodings = [face.normed_encoding for face in faces]
+
+test_file = face_recognition.load_image_file("multiplePeople.jpg", mode="RGB") #always need to load the file first before face recognition
+test_face = cv2.imread("multiplePeople.jpg") #this opens up a new window showcasing the image specfied
+
+locations = face_recognition.face_locations(test_file) #gives the co-ordinates of each face in a seperate tuple in a main list
+print(locations) #printing the locations to verify the number of faces
 
 
-test_file = face_recognition.load_image_file("myface.jpg", mode="RGB")
-test_face = cv2.imread("myface.jpg")
-
-locations = face_recognition.face_locations(test_file)
-print(locations)
-
-
-
-top, right, bottom, left = locations[0]
-top, right, bottom, left = int(top), int(right), int(bottom), int(left)
-
-
-with Image.open("myface.jpg") as img:
+with Image.open("multiplePeople.jpg") as img:
     draw = ImageDraw.Draw(img)
 
-    rectangle_coords = (left, top, right, bottom)
+    #running a for loop to let the system draw rectangles on all the faces
+    for coordinate, value in enumerate(locations):
+        #specifying the rectangle co-ordinates as they are 4 each in a list of tuple(s).
+        #the co-ordinate here should be in the order of left, top, right, bottom
+        rectangle_coords = (locations[coordinate][3], locations[coordinate][0], locations[coordinate][1], locations[coordinate][2])
+        #draw.rectangle is a function used to draw rectangles, the function needs co-ordinates, outline color, and width as parameters
+        draw.rectangle(rectangle_coords, outline="green", width=2)
 
-    draw.rectangle(rectangle_coords, outline="green", width=2)
-
-    img.save("my_new_face.jpg")
-
-
-
-
-
-"""for (top, right, bottom, left) in locations:
-    cv2.rectangle(test_face, (left, top), (right, bottom), (0, 255, 0), 2)
-
-cv2.imshow("Test", test_face)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
-"""
-
-"""
-# Create a VideoCapture object
-cap = cv2.VideoCapture(0)  # 0 for the default camera
-
-# Check if the camera is opened correctly
-if not cap.isOpened():
-    print("Cannot open camera")
-    exit()
-
-# Capture frames from the camera
-while True:
-    # Capture frame-by-frame
-    state, frame = cap.read()
-
-    if not state:
-        print("Can't receive frame. Exiting...")
-        break
-
-    # Display the captured frame
-    cv2.imshow('frame', frame)
-
-    # Press 'q' to exit
-    if cv2.waitKey(1) == ord('q'):
-        break
-    
-print(cap.isOpened(), cap.getExceptionMode())
-# Release the capture and close all windows
-cap.release()
-cv2.destroyAllWindows()
-"""
-
+    img.save("multiple_new_detected.jpg")
 
 
 
