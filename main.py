@@ -2,22 +2,15 @@
 
 #importing all the necessary libraries
 import cv2
+import face_recognition
 from mtcnn.mtcnn import MTCNN
-from insightface.app import FaceAnalysis
+#from insightface import FaceAnalysis
 import numpy as np
 from numpy import asarray
-from PIL import Image
+from PIL import Image, ImageDraw
+import imageio
 
-# Initializing FaceNet model
-model = FaceAnalysis(allowed_modules=['insightface'])
-model.prepare(ctx_id=0, det_size=(640, 640))
 
-# Load an image
-image = cv2.imread('path/to/image.jpg')
-
-# Detect faces and get encodings
-faces = model.get(image)
-encodings = [face.normed_encoding for face in faces]
 
 test_file = face_recognition.load_image_file("multiplePeople.jpg", mode="RGB") #always need to load the file first before face recognition
 test_face = cv2.imread("multiplePeople.jpg") #this opens up a new window showcasing the image specfied
@@ -39,5 +32,42 @@ with Image.open("multiplePeople.jpg") as img:
 
     img.save("multiple_new_detected.jpg")
 
+#########                          VIDEO                                #######
+
+# Load the known face encodings
+known_face_encodings = [...]  # Replace with your known face encodings
+known_face_names = [...]  # Replace with the corresponding names
 
 
+# Load the video file
+input_video = imageio.get_reader('video_of_people_walking.mp4')
+
+# Create a new video writer
+output_video = imageio.get_writer('modified_video_of_people_walking.mp4')
+
+for frame in input_video:
+    # Convert the frame to RGB format
+    rgb_frame = frame[:, :, ::-1]
+
+    # Detect faces in the frame
+    face_locations = face_recognition.face_locations(rgb_frame)
+
+    # Convert the frame to a Pillow Image
+    pil_image = Image.fromarray(rgb_frame)
+    draw = ImageDraw.Draw(pil_image)
+
+    # Loop through the detected faces
+    for face_location in face_locations:
+        # Draw a rectangle around the face
+        top, right, bottom, left = face_location
+        draw.rectangle(((left, top), (right, bottom)), outline=(9, 249, 59), width=2)
+
+    # Convert the Pillow Image back to a numpy array
+    processed_frame = np.asarray(pil_image)
+
+    # Write the processed frame to the output video
+    output_video.append_data(processed_frame[:, :, ::-1])
+
+# Close the video writers
+input_video.close()
+output_video.close()
