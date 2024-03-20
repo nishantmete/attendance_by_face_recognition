@@ -12,14 +12,14 @@ import imageio
 
 
 
-test_file = face_recognition.load_image_file("multiplePeople.jpg", mode="RGB") #always need to load the file first before face recognition
-test_face = cv2.imread("multiplePeople.jpg") #this opens up a new window showcasing the image specfied
+test_file = face_recognition.load_image_file("Designer.png", mode="RGB") #always need to load the file first before face recognition
+test_face = cv2.imread("Designer.png") #this opens up a new window showcasing the image specfied
 
 locations = face_recognition.face_locations(test_file) #gives the co-ordinates of each face in a seperate tuple in a main list
 print(locations) #printing the locations to verify the number of faces
 
 
-with Image.open("multiplePeople.jpg") as img:
+with Image.open("Designer.png") as img:
     draw = ImageDraw.Draw(img)
 
     #running a for loop to let the system draw rectangles on all the faces
@@ -28,9 +28,11 @@ with Image.open("multiplePeople.jpg") as img:
         #the co-ordinate here should be in the order of left, top, right, bottom
         rectangle_coords = (locations[coordinate][3], locations[coordinate][0], locations[coordinate][1], locations[coordinate][2])
         #draw.rectangle is a function used to draw rectangles, the function needs co-ordinates, outline color, and width as parameters
-        draw.rectangle(rectangle_coords, outline="green", width=2)
+        draw.rectangle(rectangle_coords, outline=(255, 0, 0), width=2)
 
-    img.save("multiple_new_detected.jpg")
+    img.save("challenging.png")
+
+exit()
 
 #########                          VIDEO                                #######
 
