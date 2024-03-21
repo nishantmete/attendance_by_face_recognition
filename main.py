@@ -32,7 +32,6 @@ with Image.open("Designer (1).png") as img:
 
     img.save("challenging.png")
 
-exit()
 
 #########                          VIDEO                                #######
 
