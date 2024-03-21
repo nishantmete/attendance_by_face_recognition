@@ -3,15 +3,13 @@
 #importing all the necessary libraries
 import cv2
 import face_recognition
-from mtcnn.mtcnn import MTCNN
-#from insightface import FaceAnalysis
 import numpy as np
 from numpy import asarray
 from PIL import Image, ImageDraw
 import imageio
 
 
-
+"""
 test_file = face_recognition.load_image_file("Designer (1).png", mode="RGB") #always need to load the file first before face recognition
 test_face = cv2.imread("Designer (1).png") #this opens up a new window showcasing the image specfied
 
@@ -32,7 +30,7 @@ with Image.open("Designer (1).png") as img:
 
     img.save("challenging.png")
 
-
+"""
 #########                          VIDEO                                #######
 
 # Load the known face encodings
@@ -41,20 +39,32 @@ known_face_names = [...]  # Replace with the corresponding names
 
 
 # Load the video file
-input_video = imageio.get_reader('video_of_people_walking.mp4')
+input_video = imageio.get_reader('videos/resized_video.mp4')
 
 # Create a new video writer
-output_video = imageio.get_writer('modified_video_of_people_walking.mp4')
+output_video = imageio.get_writer('videos/modified_video_of_people_walking.mp4')
+
 
 for frame in input_video:
+
     # Convert the frame to RGB format
     rgb_frame = frame[:, :, ::-1]
 
+    pil_image = Image.fromarray(rgb_frame)
+
+    # Convert the Pillow Image back to a numpy array
+    processed_frame = np.asarray(pil_image)
+
+    # Write the processed frame to the output video
+    output_video.append_data(processed_frame[:, :, ::-1])
+
+
+"""
     # Detect faces in the frame
     face_locations = face_recognition.face_locations(rgb_frame)
 
     # Convert the frame to a Pillow Image
-    pil_image = Image.fromarray(rgb_frame)
+    
     draw = ImageDraw.Draw(pil_image)
 
     # Loop through the detected faces
@@ -62,12 +72,16 @@ for frame in input_video:
         # Draw a rectangle around the face
         top, right, bottom, left = face_location
         draw.rectangle(((left, top), (right, bottom)), outline=(9, 249, 59), width=2)
+""" 
+    
+    
 
-    # Convert the Pillow Image back to a numpy array
-    processed_frame = np.asarray(pil_image)
+    
 
-    # Write the processed frame to the output video
-    output_video.append_data(processed_frame[:, :, ::-1])
+fps = input_video.get_meta_data()['fps']  # Get input video FPS
+
+output_video = imageio.get_writer('modified_video_of_people_walking.mp4', fps=fps)  # Match FPS
+
 
 # Close the video writers
 input_video.close()
