@@ -5,6 +5,11 @@ def euclidean_distance(encoding1, encoding2):
     return np.linalg.norm(encoding1 - encoding2)
 
 
+# making a face image ready for comaparison
+# the image should be loaded via face_recognition.load_image(image_path) 
+# calculate the encodings of the faces in an image 
+# and then compare it 
+
 image_path = "comparison/dhoni_7.jpg"
 face_image = face_recognition.load_image_file(image_path)
 face_locations = face_recognition.face_locations(face_image, model='cnn')
