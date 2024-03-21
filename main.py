@@ -12,14 +12,14 @@ import imageio
 
 
 
-test_file = face_recognition.load_image_file("Designer.png", mode="RGB") #always need to load the file first before face recognition
-test_face = cv2.imread("Designer.png") #this opens up a new window showcasing the image specfied
+test_file = face_recognition.load_image_file("Designer (1).png", mode="RGB") #always need to load the file first before face recognition
+test_face = cv2.imread("Designer (1).png") #this opens up a new window showcasing the image specfied
 
 locations = face_recognition.face_locations(test_file) #gives the co-ordinates of each face in a seperate tuple in a main list
 print(locations) #printing the locations to verify the number of faces
 
 
-with Image.open("Designer.png") as img:
+with Image.open("Designer (1).png") as img:
     draw = ImageDraw.Draw(img)
 
     #running a for loop to let the system draw rectangles on all the faces
