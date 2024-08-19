@@ -1,4 +1,4 @@
-# this script is for recogninizing the faces in an image and then make a boundry around the faces, this works with the help of face_recognition python library 
+# this script is for recogninizing the faces in an image and then making a boundry around the faces, this works with the help of face_recognition python library 
 
 #importing all the necessary libraries
 import cv2
